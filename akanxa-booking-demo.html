@@ -1,0 +1,684 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Book an appointment — Akanxa Wellness Studio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Karla:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#16241C;
+  --herb:#2C4636;
+  --herb-dark:#1E3226;
+  --paper:#FCFAF6;
+  --card:#FFFFFF;
+  --marigold:#B87A24;
+  --marigold-soft:#F7EDDC;
+  --stone:#6E7269;
+  --line:#E3DFD5;
+  --line-strong:#CFC9BB;
+  --alert:#8E4340;
+  --alert-soft:#F8EEED;
+  --radius:6px;
+  --shell:560px;
+}
+
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{
+  background:var(--paper);
+  color:var(--ink);
+  font-family:"Karla",-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+  font-size:16px;
+  line-height:1.55;
+  -webkit-font-smoothing:antialiased;
+}
+button{font-family:inherit;font-size:inherit;color:inherit;cursor:pointer}
+:focus-visible{outline:2px solid var(--marigold);outline-offset:2px;border-radius:2px}
+
+/* ---------- prototype notice ---------- */
+.proto{
+  background:var(--herb-dark);
+  color:#EDE7D9;
+  font-size:12.5px;
+  letter-spacing:.01em;
+  text-align:center;
+  padding:7px 16px;
+}
+.proto b{font-weight:600;color:#fff}
+
+/* ---------- shell ---------- */
+.shell{max-width:var(--shell);margin:0 auto;padding:0 18px 72px}
+
+/* ---------- header: sticky, never overlaps content ---------- */
+.topbar{
+  position:sticky;top:0;z-index:50;
+  background:var(--paper);
+  border-bottom:1px solid var(--line);
+}
+.topbar-inner{
+  max-width:var(--shell);margin:0 auto;padding:12px 18px 0;
+}
+.brandrow{display:flex;align-items:center;gap:12px;min-height:38px}
+.back{
+  display:inline-flex;align-items:center;gap:7px;
+  background:none;border:1px solid var(--line-strong);
+  border-radius:var(--radius);
+  padding:6px 11px 6px 9px;
+  font-size:14px;font-weight:500;color:var(--herb);
+  transition:background .15s ease,border-color .15s ease;
+}
+.back:hover{background:#fff;border-color:var(--herb)}
+.back svg{display:block}
+.brand{
+  font-family:"Fraunces",Georgia,serif;
+  font-size:19px;font-weight:500;letter-spacing:.005em;
+  margin:0 auto 0 0;
+  color:inherit;text-decoration:none;display:inline-block;
+}
+.brand span{color:var(--stone);font-size:13px;font-family:"Karla",sans-serif;display:block;line-height:1.2;font-weight:400}
+.call{
+  display:inline-flex;align-items:center;justify-content:center;
+  flex:none;width:34px;height:34px;
+  border:1px solid var(--line-strong);border-radius:var(--radius);
+  color:var(--herb);text-decoration:none;
+  transition:background .15s ease,border-color .15s ease;
+}
+.call:hover{background:#fff;border-color:var(--herb)}
+.stepcount{font-size:13px;color:var(--stone);font-variant-numeric:tabular-nums;white-space:nowrap}
+
+.track{display:flex;gap:3px;padding:11px 0 10px}
+.track i{flex:1;height:3px;background:var(--line);border-radius:2px;transition:background .3s ease}
+.track i.on{background:var(--herb)}
+.track i.done{background:var(--marigold)}
+
+/* ---------- chosen-so-far chips ---------- */
+.chosen{display:flex;flex-wrap:wrap;gap:6px;margin:16px 0 4px}
+.chip{
+  display:inline-flex;align-items:center;gap:6px;
+  background:var(--marigold-soft);border:1px solid #E8D5B4;
+  color:#6A4712;border-radius:var(--radius);
+  padding:4px 9px;font-size:13px;font-weight:500;
+}
+.chip u{text-decoration:none;color:var(--marigold);font-weight:600;font-size:12px}
+.chip:hover{border-color:var(--marigold)}
+
+/* ---------- typography ---------- */
+h1{
+  font-family:"Fraunces",Georgia,serif;
+  font-weight:400;font-size:27px;line-height:1.22;
+  margin:26px 0 6px;letter-spacing:-.005em;
+}
+.lede{color:var(--stone);margin:0 0 22px;font-size:15px;max-width:46ch}
+
+/* ---------- notices ---------- */
+.notice{
+  border-left:3px solid var(--marigold);
+  background:var(--marigold-soft);
+  padding:12px 14px;border-radius:0 var(--radius) var(--radius) 0;
+  font-size:14.5px;margin:0 0 22px;color:#5C3F10;
+}
+.notice strong{font-weight:700}
+
+/* ---------- option lists ---------- */
+.opts{display:flex;flex-direction:column;gap:9px}
+.opt{
+  display:block;width:100%;text-align:left;
+  background:var(--card);border:1px solid var(--line);
+  border-radius:var(--radius);padding:15px 16px;
+  transition:border-color .15s ease,box-shadow .15s ease;
+}
+.opt:hover{border-color:var(--herb);box-shadow:0 1px 0 var(--line-strong)}
+.opt.sel{border-color:var(--herb);box-shadow:inset 0 0 0 1px var(--herb)}
+.opt-top{display:flex;justify-content:space-between;align-items:baseline;gap:14px}
+.opt-name{font-weight:600;font-size:15.5px}
+.opt-price{font-weight:600;color:var(--herb);white-space:nowrap;font-variant-numeric:tabular-nums}
+.opt-meta{color:var(--stone);font-size:13px;margin-top:3px}
+.opt-desc{color:var(--stone);font-size:14px;margin-top:6px;line-height:1.5}
+
+.opt.off{background:#F6F4EF;cursor:not-allowed}
+.opt.off:hover{border-color:var(--line);box-shadow:none}
+.opt.off .opt-name,.opt.off .opt-price{color:var(--stone)}
+.why{
+  margin-top:8px;font-size:13.5px;color:var(--alert);
+  background:var(--alert-soft);border-radius:4px;padding:7px 10px;
+}
+
+.group{margin:24px 0 10px;font-size:12.5px;font-weight:700;color:var(--stone);letter-spacing:.02em}
+.group:first-child{margin-top:0}
+
+/* ---------- empty state ---------- */
+.empty{
+  border:1px dashed var(--line-strong);border-radius:var(--radius);
+  padding:22px;text-align:center;color:var(--stone);font-size:14.5px;
+}
+
+/* ---------- calendar ---------- */
+.calhead{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
+.calmonth{font-family:"Fraunces",Georgia,serif;font-size:18px;font-weight:500}
+.calnav{display:flex;gap:6px}
+.calnav button{
+  background:var(--card);border:1px solid var(--line);border-radius:var(--radius);
+  width:34px;height:34px;display:grid;place-items:center;color:var(--herb);
+}
+.calnav button:hover:not(:disabled){border-color:var(--herb)}
+.calnav button:disabled{opacity:.32;cursor:not-allowed}
+
+.grid{display:grid;grid-template-columns:repeat(7,1fr);gap:5px}
+.dow{
+  text-align:center;font-size:11.5px;font-weight:700;color:var(--stone);
+  padding-bottom:6px;
+}
+.day{
+  aspect-ratio:1/1;border:1px solid var(--line);background:var(--card);
+  border-radius:var(--radius);display:flex;flex-direction:column;
+  align-items:center;justify-content:center;gap:1px;
+  font-size:15px;font-weight:500;font-variant-numeric:tabular-nums;
+  transition:border-color .15s ease;
+}
+.day:hover:not(.blocked):not(.blank){border-color:var(--herb)}
+.day.sel{background:var(--herb);border-color:var(--herb);color:#fff}
+.day small{font-size:9px;font-weight:600;color:var(--stone);letter-spacing:.02em}
+.day.blank{border:none;background:none;cursor:default}
+.day.blocked{
+  cursor:not-allowed;color:var(--stone);
+  background:repeating-linear-gradient(-45deg,#F4F1EA,#F4F1EA 4px,#EDE9E0 4px,#EDE9E0 8px);
+  border-color:transparent;
+}
+.day.past{cursor:not-allowed;color:#C2BFB6;background:#FAF8F4;border-color:transparent}
+
+.legend{display:flex;flex-wrap:wrap;gap:16px;margin-top:14px;font-size:13px;color:var(--stone)}
+.legend span{display:inline-flex;align-items:center;gap:7px}
+.swatch{width:15px;height:15px;border-radius:3px;display:inline-block}
+.swatch.closed{background:repeating-linear-gradient(-45deg,#F4F1EA,#F4F1EA 4px,#EDE9E0 4px,#EDE9E0 8px)}
+.swatch.open{background:var(--card);border:1px solid var(--line)}
+
+/* ---------- times ---------- */
+.times{display:grid;grid-template-columns:repeat(auto-fill,minmax(88px,1fr));gap:8px}
+.slot{
+  background:var(--card);border:1px solid var(--line);border-radius:var(--radius);
+  padding:11px 6px;font-weight:600;font-variant-numeric:tabular-nums;font-size:15px;
+}
+.slot:hover:not(:disabled){border-color:var(--herb)}
+.slot.sel{background:var(--herb);border-color:var(--herb);color:#fff}
+.slot:disabled{color:#C2BFB6;background:#FAF8F4;border-color:transparent;cursor:not-allowed;text-decoration:line-through}
+
+/* ---------- form ---------- */
+.field{margin-bottom:16px}
+.field label{display:block;font-size:14px;font-weight:600;margin-bottom:5px}
+.field .hint{font-weight:400;color:var(--stone);font-size:13px}
+.field input,.field textarea{
+  width:100%;padding:11px 12px;font-family:inherit;font-size:15.5px;
+  border:1px solid var(--line-strong);border-radius:var(--radius);
+  background:var(--card);color:var(--ink);
+}
+.field input:focus,.field textarea:focus{outline:2px solid var(--marigold);outline-offset:0;border-color:var(--marigold)}
+.field textarea{min-height:82px;resize:vertical}
+.field.bad input{border-color:var(--alert);background:var(--alert-soft)}
+.err{color:var(--alert);font-size:13.5px;margin-top:5px;font-weight:500}
+
+/* ---------- review ---------- */
+.review{border:1px solid var(--line);border-radius:var(--radius);background:var(--card);overflow:hidden}
+.row{display:flex;align-items:flex-start;gap:12px;padding:13px 15px;border-bottom:1px solid var(--line)}
+.row:last-child{border-bottom:none}
+.row dt{width:88px;flex:none;color:var(--stone);font-size:13.5px;padding-top:1px}
+.row dd{margin:0;flex:1;font-weight:600;font-size:15px}
+.row dd em{display:block;font-style:normal;font-weight:400;color:var(--stone);font-size:13.5px;margin-top:2px}
+.edit{
+  background:none;border:none;color:var(--marigold);font-weight:600;
+  font-size:13.5px;padding:0;text-decoration:underline;text-underline-offset:2px;flex:none;
+}
+.total{display:flex;justify-content:space-between;padding:14px 15px;background:#F7F4EE;font-weight:700}
+
+/* ---------- actions ---------- */
+.actions{margin-top:26px;display:flex;flex-direction:column;gap:10px}
+.cta{
+  background:var(--herb);color:#fff;border:1px solid var(--herb);
+  border-radius:var(--radius);padding:14px 20px;font-weight:600;font-size:16px;
+  transition:background .15s ease;
+}
+.cta:hover{background:var(--herb-dark)}
+.cta:disabled{background:#B6BDB6;border-color:#B6BDB6;cursor:not-allowed}
+.ghost{
+  background:none;border:1px solid var(--line-strong);color:var(--herb);
+  border-radius:var(--radius);padding:12px 20px;font-weight:600;
+}
+.ghost:hover{border-color:var(--herb);background:#fff}
+
+/* ---------- done ---------- */
+.done{text-align:center;padding:26px 0}
+.tick{width:52px;height:52px;border-radius:50%;background:var(--herb);display:grid;place-items:center;margin:0 auto 18px}
+.done h1{margin-top:0}
+.next{text-align:left;background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:16px 18px;margin-top:22px}
+.next h2{font-family:"Fraunces",Georgia,serif;font-size:16px;font-weight:500;margin:0 0 8px}
+.next ul{margin:0;padding-left:19px;color:var(--stone);font-size:14.5px}
+.next li{margin-bottom:5px}
+
+.footnote{margin-top:34px;padding-top:18px;border-top:1px solid var(--line);color:var(--stone);font-size:13px}
+.footnote a{color:var(--herb)}
+
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+@media (max-width:420px){
+  h1{font-size:24px}
+  .brand{font-size:17px}
+  .row dt{width:74px}
+  .stepcount{display:none}
+}
+</style>
+</head>
+<body>
+
+<div class="proto">Working prototype built for Akanxa Wellness Studio — <b>no real bookings are made</b></div>
+
+<header class="topbar">
+  <div class="topbar-inner">
+    <div class="brandrow">
+      <button class="back" id="back" hidden>
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+        Back
+      </button>
+      <a class="brand" href="https://akanxa.nl/">Akanxa<span>Beauty &amp; Wellness Studio</span></a>
+      <a class="call" href="tel:+31657875249" aria-label="Call or WhatsApp Akanxa: 06 578 752 49" title="Call: 06 578 752 49">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+      </a>
+      <div class="stepcount" id="stepcount"></div>
+    </div>
+    <div class="track" id="track"></div>
+  </div>
+</header>
+
+<main class="shell" id="main" tabindex="-1" aria-live="polite"></main>
+
+<script>
+"use strict";
+
+/* ------------------------------------------------------------------
+   Treatments, prices and durations are taken from akanxa.nl
+   (Hair Removal and Facials pages). Other categories are left empty
+   on purpose so nothing here is invented.
+------------------------------------------------------------------ */
+const CATEGORIES = [
+  { id:"removal", name:"Hair Removal", blurb:"Threading and waxing, including bikini and Brazilian." },
+  { id:"facial",  name:"Facial Treatments", blurb:"Ayurvedic facials for every skin type." },
+  { id:"brows",   name:"Brows", blurb:"Lamination, henna and hybrid tint, powder brows." },
+  { id:"hair",    name:"Hair Care", blurb:"Cuts, styling, colour and hair spa." },
+  { id:"spa",     name:"Spa &amp; Massages", blurb:"Aroma, relaxation and therapeutic massage." },
+  { id:"nails",   name:"Nail Care", blurb:"Manicure, pedicure, gel and BIAB.", external:true }
+];
+
+const TREATMENTS = {
+  removal:[
+    { g:"Threading", n:"Eyebrow Threading", p:13, m:15, d:"Perfectly shaped brows using a fine thread, with minimal discomfort." },
+    { g:"Threading", n:"Upper Lip, Chin or Forehead", p:7, m:10, d:"Price covers one of the three areas." },
+    { g:"Threading", n:"Full Face Threading", p:44, m:30, d:"Whole face including upper lip, chin, forehead and cheeks. Eyebrows not included." },
+
+    { g:"Body waxing", n:"Armpit Waxing", p:15, m:15 },
+    { g:"Body waxing", n:"Half Back Waxing", p:20, m:20, d:"Upper or lower back." },
+    { g:"Body waxing", n:"Belly Waxing", p:20, m:20 },
+    { g:"Body waxing", n:"Full Arm Waxing", p:30, m:25 },
+    { g:"Body waxing", n:"Full Back Waxing", p:30, m:30 },
+    { g:"Body waxing", n:"Half Leg Waxing", p:30, m:25 },
+    { g:"Body waxing", n:"Full Leg Waxing", p:40, m:30 },
+    { g:"Body waxing", n:"Full Body Waxing", p:160, m:100, d:"Whole body except face and bikini." },
+
+    { g:"Face waxing", n:"Brow Shaping by Wax", p:25, m:20, d:"Waxed and tweezed into a clean shape. No colour applied." },
+    { g:"Face waxing", n:"Upper Lip, Chin or Forehead", p:8, from:true, m:15, d:"Price covers one of the three areas." },
+    { g:"Face waxing", n:"Sideburn Waxing", p:15, m:15 },
+    { g:"Face waxing", n:"Full Face Waxing", p:40, from:true, m:30, d:"With or without eyebrows included." },
+
+    { g:"Bikini &amp; intimate", n:"Bikini Line Waxing", p:35, m:30, d:"Shaping along the bikini line, done discreetly." },
+    { g:"Bikini &amp; intimate", n:"Full Brazilian Waxing", p:50, m:40, d:"Premium Rica wax, kind to delicate skin." },
+    { g:"Bikini &amp; intimate", n:"Butt Waxing", p:35, m:30, d:"Easily combined with a bikini line or Brazilian treatment." }
+  ],
+  facial:[
+    { n:"Face Massage", p:30, m:15, d:"Face, ears and neck, with oil, gel or cream." },
+    { n:"Mini Facial (Deep Cleansing)", p:40, m:30 },
+    { n:"Teen Glow Facial", p:50, m:50, d:"Complete facial designed for teenage skin." },
+    { n:"Teen Deep Cleansing", p:42, m:30, d:"Gentle cleanse using mild products." },
+    { n:"SkinCare Classic Facial", p:55, m:45, d:"Deep cleanse and hydration for routine skin care." },
+    { n:"MLD Facial", p:60, from:true, m:60, d:"Manual lymphatic drainage. Neck and shoulders can be added for €14." },
+    { n:"Instaglow Facial", p:65, m:45 },
+    { n:"Anti-Ageing Facial", p:69, m:60, d:"Uses a galvanic machine." },
+    { n:"Clarifying Detox Facial", p:69, m:60, d:"Uses high frequency. Minimum three sessions recommended." },
+    { n:"Gold Radiance Facial", p:75, m:60 },
+    { n:"Hydra Facial", p:75, m:60, off:"Temporarily unavailable. Call 06 578 752 49 and we will let you know when it is back." },
+    { n:"Aroma Therapy Facial", p:83, m:70, d:"Essential oils with a calming massage." }
+  ],
+  brows:[], hair:[], spa:[], nails:[]
+};
+
+const OPEN = { 0:null, 1:null, 2:[10,18], 3:[10,18], 4:[10,18], 5:[10,18], 6:[10,18] };
+const DAYNAME = ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
+const STEPS = ["category","treatment","date","time","details","review"];
+
+const S = { i:0, cat:null, tr:null, date:null, time:null,
+            form:{name:"",email:"",phone:"",notes:""}, errs:{}, month:null, done:false };
+
+const main = document.getElementById("main");
+const backBtn = document.getElementById("back");
+const track = document.getElementById("track");
+const stepcount = document.getElementById("stepcount");
+
+const esc = s => String(s).replace(/[<>&"]/g, c => ({"<":"&lt;",">":"&gt;","&":"&amp;",'"':"&quot;"}[c]));
+const money = t => (t.from ? "from €" : "€") + t.p;
+const ymd = d => d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0");
+const sameDay = (a,b) => a && b && ymd(a) === ymd(b);
+const longDate = d => DAYNAME[d.getDay()]+" "+d.getDate()+" "+d.toLocaleString("en-GB",{month:"long"});
+
+function endTime(t, mins){
+  const [h,m] = t.split(":").map(Number);
+  const e = h*60+m+mins;
+  return String(Math.floor(e/60)).padStart(2,"0")+":"+String(e%60).padStart(2,"0");
+}
+
+/* Stable pseudo-booked slots so the demo looks like a real diary
+   without changing every time the page is opened. */
+function taken(dateStr, slot){
+  let h = 0, s = dateStr + slot;
+  for (let i = 0; i < s.length; i++) h = (h*31 + s.charCodeAt(i)) >>> 0;
+  return h % 100 < 28;
+}
+
+function slotsFor(date, mins){
+  const win = OPEN[date.getDay()];
+  if (!win) return [];
+  const out = [];
+  for (let t = win[0]*60; t + mins <= win[1]*60; t += 30){
+    out.push(String(Math.floor(t/60)).padStart(2,"0")+":"+String(t%60).padStart(2,"0"));
+  }
+  return out;
+}
+
+function go(i){
+  S.i = i;
+  render();
+  main.focus();
+  window.scrollTo(0, 0);
+}
+
+/* ---------------- chrome ---------------- */
+function chrome(){
+  if (S.done){ track.innerHTML = ""; stepcount.textContent = ""; backBtn.hidden = true; return; }
+  track.innerHTML = STEPS.map((_,i) =>
+    `<i class="${i < S.i ? "done" : i === S.i ? "on" : ""}"></i>`).join("");
+  stepcount.textContent = `Step ${S.i+1} of ${STEPS.length}`;
+  backBtn.hidden = S.i === 0;
+}
+
+/* Every earlier choice stays visible and stays clickable. */
+function chips(){
+  const c = [];
+  if (S.cat) c.push([0, S.cat.name.replace(/&amp;/g,"&")]);
+  if (S.tr)  c.push([1, S.tr.n.replace(/&amp;/g,"&")]);
+  if (S.date)c.push([2, longDate(S.date)]);
+  if (S.time)c.push([3, S.time]);
+  if (!c.length) return "";
+  return `<div class="chosen">` + c.map(([i,label]) =>
+    `<button class="chip" data-goto="${i}">${esc(label)} <u>change</u></button>`).join("") + `</div>`;
+}
+
+/* ---------------- steps ---------------- */
+function stepCategory(){
+  return chips() + `
+  <h1>What would you like booked?</h1>
+  <p class="lede">Pick a treatment area to see the full list, prices and how long each appointment takes.</p>
+  <div class="notice"><strong>Our hair removal &amp; waxing treatments take place in a women-only space</strong>, as stated on our website. Questions about any treatment? Call 06 578 752 49.</div>
+  <div class="opts">` +
+  CATEGORIES.map(c => {
+    const count = TREATMENTS[c.id].length;
+    const soon = !count && !c.external;
+    return `<button class="opt${soon ? " off" : ""}" data-cat="${c.id}"${soon ? " disabled" : ""}>
+      <div class="opt-top"><span class="opt-name">${c.name}</span></div>
+      <div class="opt-desc">${c.blurb}</div>
+      ${c.external ? `<div class="opt-meta">Booked through The Nailway, our in-house nail studio</div>` : ""}
+      ${soon ? `<div class="why">Not yet listed for online booking. Call 06 578 752 49 to book this.</div>` : ""}
+    </button>`;
+  }).join("") + `</div>` + foot();
+}
+
+function stepTreatment(){
+  const list = TREATMENTS[S.cat.id];
+  let html = chips() + `<h1>${S.cat.name}</h1>
+    <p class="lede">Prices and times are per treatment. You can change this later without starting again.</p>`;
+
+  if (S.cat.external){
+    html += `<div class="empty">Nail treatments are booked directly with The Nailway, who work inside our studio.
+      They keep their own calendar, so the button below opens their booking page.<br><br>
+      <a href="https://the-nailway.salonized.com/" target="_blank" rel="noopener">Open The Nailway booking page</a></div>`;
+    return html + foot();
+  }
+
+  html += `<div class="opts">`;
+  let group = null;
+  list.forEach((t, idx) => {
+    if (t.g && t.g !== group){ group = t.g; html += `</div><div class="group">${t.g}</div><div class="opts">`; }
+    html += `<button class="opt${t.off ? " off" : ""}${S.tr === t ? " sel" : ""}" data-tr="${idx}"${t.off ? " disabled" : ""}>
+      <div class="opt-top">
+        <span class="opt-name">${t.n}</span>
+        <span class="opt-price">${money(t)}</span>
+      </div>
+      <div class="opt-meta">about ${t.m} minutes</div>
+      ${t.d ? `<div class="opt-desc">${t.d}</div>` : ""}
+      ${t.off ? `<div class="why">${t.off}</div>` : ""}
+    </button>`;
+  });
+  return html + `</div>` + foot();
+}
+
+function stepDate(){
+  const today = new Date(); today.setHours(0,0,0,0);
+  if (!S.month) S.month = new Date(today.getFullYear(), today.getMonth(), 1);
+
+  const first = new Date(S.month), y = first.getFullYear(), mo = first.getMonth();
+  const lead = (first.getDay() + 6) % 7;                 // Monday-first grid
+  const len = new Date(y, mo+1, 0).getDate();
+  const atStart = y === today.getFullYear() && mo === today.getMonth();
+
+  let cells = "";
+  for (let i = 0; i < lead; i++) cells += `<div class="day blank"></div>`;
+  for (let d = 1; d <= len; d++){
+    const day = new Date(y, mo, d);
+    const past = day < today;
+    const shut = !OPEN[day.getDay()];
+    const cls = past ? "past" : shut ? "blocked" : sameDay(day, S.date) ? "sel" : "";
+    const dis = (past || shut) ? " disabled" : "";
+    const why = shut && !past
+      ? ` title="Closed on ${DAYNAME[day.getDay()]}s"` : "";
+    cells += `<button class="day ${cls}" data-day="${ymd(day)}"${dis}${why}>${d}${shut && !past ? "<small>closed</small>" : ""}</button>`;
+  }
+
+  return chips() + `
+  <h1>Pick a day</h1>
+  <p class="lede">We are open Tuesday to Saturday, 10:00 to 18:00. Sundays and Mondays are marked closed below rather than left blank, so you can see why they cannot be picked.</p>
+  <div class="calhead">
+    <div class="calmonth">${first.toLocaleString("en-GB",{month:"long"})} ${y}</div>
+    <div class="calnav">
+      <button data-mo="-1" aria-label="Previous month"${atStart ? " disabled" : ""}>
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M15 18l-6-6 6-6"/></svg></button>
+      <button data-mo="1" aria-label="Next month">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M9 18l6-6-6-6"/></svg></button>
+    </div>
+  </div>
+  <div class="grid">${["Mon","Tue","Wed","Thu","Fri","Sat","Sun"].map(d=>`<div class="dow">${d}</div>`).join("")}${cells}</div>
+  <div class="legend">
+    <span><i class="swatch open"></i> Open for bookings</span>
+    <span><i class="swatch closed"></i> Studio closed</span>
+  </div>` + foot();
+}
+
+function stepTime(){
+  const all = slotsFor(S.date, S.tr.m);
+  const ds = ymd(S.date);
+  const free = all.filter(s => !taken(ds, s));
+
+  let body;
+  if (!free.length){
+    body = `<div class="empty">Nothing free on this day for a ${S.tr.m}-minute treatment.
+      Use <b>Back</b> to pick another day, or call 06 578 752 49 and we will find you a slot.</div>`;
+  } else {
+    body = `<div class="times">` + all.map(s => {
+      const busy = taken(ds, s);
+      return `<button class="slot${S.time === s ? " sel" : ""}" data-time="${s}"${busy ? " disabled" : ""} ${busy ? 'title="Already booked"' : ""}>${s}</button>`;
+    }).join("") + `</div>`;
+  }
+
+  return chips() + `
+  <h1>Pick a time</h1>
+  <p class="lede">${longDate(S.date)} — ${esc(S.tr.n.replace(/&amp;/g,"&"))}, about ${S.tr.m} minutes.
+  Crossed-out times are already booked.</p>` + body + foot();
+}
+
+function stepDetails(){
+  const f = S.form, e = S.errs;
+  const fld = (k,label,hint,type) => `
+    <div class="field${e[k] ? " bad" : ""}">
+      <label for="${k}">${label}${hint ? ` <span class="hint">${hint}</span>` : ""}</label>
+      <input id="${k}" name="${k}" type="${type||"text"}" value="${esc(f[k])}" autocomplete="${
+        k==="name"?"name":k==="email"?"email":k==="phone"?"tel":"off"}">
+      ${e[k] ? `<div class="err">${e[k]}</div>` : ""}
+    </div>`;
+
+  return chips() + `
+  <h1>Your details</h1>
+  <p class="lede">We use these to confirm your appointment and to let you know if anything changes.</p>
+  ${fld("name","Name")}
+  ${fld("email","Email","— your confirmation goes here","email")}
+  ${fld("phone","Mobile number","— in case we need to reach you on the day","tel")}
+  <div class="field">
+    <label for="notes">Anything we should know <span class="hint">— optional</span></label>
+    <textarea id="notes" name="notes" placeholder="Allergies, sensitive skin, a therapist you have seen before, or a treatment you would like added.">${esc(f.notes)}</textarea>
+  </div>
+  <div class="actions"><button class="cta" data-next>Review your booking</button></div>` + foot();
+}
+
+function stepReview(){
+  const t = S.tr;
+  const row = (label, value, sub, step) => `
+    <div class="row">
+      <dt>${label}</dt>
+      <dd>${esc(value)}${sub ? `<em>${esc(sub)}</em>` : ""}</dd>
+      ${step !== undefined ? `<button class="edit" data-goto="${step}">Edit</button>` : ""}
+    </div>`;
+
+  return `
+  <h1>Check everything over</h1>
+  <p class="lede">Change any line here without losing the rest.</p>
+  <dl class="review" style="margin:0">
+    ${row("Treatment", t.n.replace(/&amp;/g,"&"), S.cat.name.replace(/&amp;/g,"&"), 1)}
+    ${row("When", longDate(S.date), `${S.time} – ${endTime(S.time, t.m)}, about ${t.m} minutes`, 2)}
+    ${row("Name", S.form.name, "", 4)}
+    ${row("Contact", S.form.email, S.form.phone, 4)}
+    ${S.form.notes ? row("Notes", S.form.notes, "", 4) : ""}
+    ${row("Where", "Kostverlorenhof 14, Amstelveen", "Free parking for 2 hours with a blue card")}
+    <div class="total"><span>Total</span><span>${money(t)}</span></div>
+  </dl>
+  <div class="actions">
+    <button class="cta" data-confirm>Confirm booking</button>
+    <button class="ghost" data-goto="0">Book something else instead</button>
+  </div>` + foot();
+}
+
+function stepDone(){
+  const t = S.tr;
+  return `<div class="done">
+    <div class="tick"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg></div>
+    <h1>You are booked in</h1>
+    <p class="lede" style="margin:0 auto">${esc(t.n.replace(/&amp;/g,"&"))} on ${longDate(S.date)} at ${S.time}.</p>
+    <div class="next">
+      <h2>What happens next</h2>
+      <ul>
+        <li>A confirmation is on its way to ${esc(S.form.email)}.</li>
+        <li>We will send a reminder the day before.</li>
+        <li>Need to move or cancel? Call or WhatsApp 06 578 752 49.</li>
+        <li>Please arrive a few minutes early so we can start on time.</li>
+      </ul>
+    </div>
+    <div class="actions"><button class="ghost" data-restart>Book another treatment</button></div>
+  </div>` + foot();
+}
+
+function foot(){
+  return `<div class="footnote">Akanxa Wellness Studio · Kostverlorenhof 14, 1183 HE Amstelveen · Open Tuesday to Saturday, 10:00–18:00<br>
+  This is a demonstration of a rebuilt booking flow. It does not write to the studio's real calendar.</div>`;
+}
+
+/* ---------------- render ---------------- */
+function render(){
+  chrome();
+  if (S.done){ main.innerHTML = stepDone(); return; }
+  main.innerHTML = [stepCategory, stepTreatment, stepDate, stepTime, stepDetails, stepReview][S.i]();
+}
+
+/* ---------------- events ---------------- */
+backBtn.addEventListener("click", () => { if (S.i > 0) go(S.i - 1); });
+
+main.addEventListener("click", ev => {
+  const el = ev.target.closest("button");
+  if (!el || el.disabled) return;
+
+  if (el.dataset.goto !== undefined) return go(+el.dataset.goto);
+
+  if (el.dataset.cat){
+    const next = CATEGORIES.find(c => c.id === el.dataset.cat);
+    if (S.cat !== next){ S.cat = next; S.tr = null; S.time = null; }
+    return go(1);
+  }
+
+  if (el.dataset.tr !== undefined){
+    const next = TREATMENTS[S.cat.id][+el.dataset.tr];
+    if (S.tr !== next){ S.tr = next; S.time = null; }   // duration changed, so re-pick the time
+    return go(2);
+  }
+
+  if (el.dataset.mo){
+    S.month = new Date(S.month.getFullYear(), S.month.getMonth() + (+el.dataset.mo), 1);
+    return render();
+  }
+
+  if (el.dataset.day){
+    const [y,m,d] = el.dataset.day.split("-").map(Number);
+    const picked = new Date(y, m-1, d);
+    if (!sameDay(picked, S.date)) S.time = null;
+    S.date = picked;
+    return go(3);
+  }
+
+  if (el.dataset.time){ S.time = el.dataset.time; return go(4); }
+
+  if (el.hasAttribute("data-next")){
+    ["name","email","phone","notes"].forEach(k => {
+      const i = document.getElementById(k); if (i) S.form[k] = i.value.trim();
+    });
+    S.errs = {};
+    if (!S.form.name) S.errs.name = "We need a name for the appointment.";
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(S.form.email)) S.errs.email = "Check this email address — the confirmation goes here.";
+    if (S.form.phone.replace(/\D/g,"").length < 8) S.errs.phone = "Add a mobile number we can reach you on.";
+    if (Object.keys(S.errs).length){
+      render();
+      const bad = main.querySelector(".field.bad input");
+      if (bad) bad.focus();
+      return;
+    }
+    return go(5);
+  }
+
+  if (el.hasAttribute("data-confirm")){ S.done = true; return go(S.i); }
+
+  if (el.hasAttribute("data-restart")){
+    Object.assign(S, { i:0, cat:null, tr:null, date:null, time:null,
+      form:{name:"",email:"",phone:"",notes:""}, errs:{}, month:null, done:false });
+    return go(0);
+  }
+});
+
+/* keep typed values when validation re-renders */
+main.addEventListener("input", ev => {
+  if (ev.target.name && S.form.hasOwnProperty(ev.target.name)) S.form[ev.target.name] = ev.target.value;
+});
+
+render();
+</script>
+</body>
+</html>
